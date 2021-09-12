@@ -1,0 +1,254 @@
+<!doctype html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+
+        <title>Blank template</title>
+
+        <!-- Load external CSS styles -->
+        <link rel="stylesheet" href="styles.css">
+        <style>
+            wrapper {
+                text-align: center;
+                position: absolute;
+                
+            }
+
+            button {
+                height: 50px;
+            }
+            body {
+
+                height: 100%;
+                background-image: url(https://animedoroexams.w3spaces.com/Anime.jpg?bypass-cache=1628337015);
+                background-repeat: no-repeat;
+                background-size: cover;
+                color: white;
+
+            }
+
+            input {
+                height: 50px;
+                width: 350px;
+                font-size: 25px;
+            }
+            mark {
+                background-color: yellow;
+                color: ;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <h1><mark>Animedoro Exams</mark></h1>
+
+
+        <div style = "position:relative; top:300px" class="wrapper">
+            <output style = "width: 200px; font-size: 60px; height: 70px; background-color: blue" type="text" id="txt">
+        </div>
+        <div style = "position:relative; top:350px" class="wrapper">
+            <button onclick="startTimer()" id="Resume"><span>&#9654;</span></button>
+            <button onclick="pauseTimer()"><span>&#9208;</span></button>
+            <button onclick="stopTimer()"><span>&#9209;</span></button>
+
+            
+
+        
+        </div>
+        <div style = "position:relative; top:450px" class="wrapper">
+            <input type="text" id="Overallstudy">
+            <input type="text" id="SessionStudy">
+        </div>
+
+
+        <script>
+        var timer_is_paused = 0;
+        var startedAt = 0;
+        var pausedAT= 0;
+        var elapsedTime = 0;
+        var t;
+        var timer_is_on = 0;
+        var timer_is_over = 0;
+        var timer_has_stopped = 0;
+        var animeTimer_is_over = 1;
+        var cycles = 0;
+        var elapsedMin = 0;
+        var elapsedSec = 0;
+        document.getElementById("txt").value = Math.floor(elapsedMin) + ":" + elapsedSec.toFixed();
+        var previousTime = 0;
+        var sesh = 0;
+        if (localStorage.clickcount) {
+
+        }
+        else {
+            localStorage.clickcount = 0;
+        }
+        overallSec = localStorage.clickcount/1000;
+        sessionSec = sesh/1000;
+
+        overallMin = overallSec/60;
+        sessionMin = sessionSec/60;
+
+        overallHrs = overallMin/60;
+        sessionHrs = sessionMin/60;
+
+        overallSec = overallSec-Math.floor(overallMin)*60;
+        sessionSec = sessionSec-Math.floor(sessionMin)*60;
+
+        overallMin = overallMin-Math.floor(overallHrs)*60;
+        sessionMin = sessionMin-Math.floor(sessionHrs)*60;
+
+        document.getElementById("Overallstudy").value = "Overall: " + Math.floor(overallHrs) + "Hrs " + Math.floor(overallMin) + "Min " + overallSec.toFixed() + "Sec";
+        document.getElementById("SessionStudy").value = "Current Sesh: " + Math.floor(sessionHrs) + "Hrs " + Math.floor(sessionMin) + "Min " + sessionSec.toFixed() + "Sec";
+        var mp3_url ="https://www.fesliyanstudios.com/play-mp3/5631";
+
+        function timer() {
+            elapsedTime = Date.now()-startedAt;
+            elapsedSec = elapsedTime/1000;
+            elapsedMin = elapsedSec/60;
+
+            
+            elapsedSec = elapsedSec-Math.floor(elapsedMin)*60;
+
+            document.getElementById("txt").value = Math.floor(elapsedMin) + ":" + elapsedSec.toFixed();
+
+            if (elapsedTime < 1000) {
+                previousTime=0;
+            }
+
+            if (typeof(Storage) != "undefined") {
+                localStorage.clickcount = Number(localStorage.clickcount)+elapsedTime-previousTime;
+                sesh = sesh+elapsedTime-previousTime;
+
+                overallSec =  Number(localStorage.clickcount)/1000;
+                sessionSec = sesh/1000;
+
+                overallMin = overallSec/60;
+                sessionMin = sessionSec/60;
+
+                overallHrs = overallMin/60;
+                sessionHrs = sessionMin/60;
+
+                overallSec = overallSec-Math.floor(overallMin)*60;
+                sessionSec = sessionSec-Math.floor(sessionMin)*60;
+
+                overallMin = overallMin-Math.floor(overallHrs)*60;
+                sessionMin = sessionMin-Math.floor(sessionHrs)*60;
+
+                document.getElementById("Overallstudy").value = "Overall: " + Math.floor(overallHrs) + "Hrs " + Math.floor(overallMin) + "Min " + overallSec.toFixed() + "Sec";
+                document.getElementById("SessionStudy").value = "Current Sesh: " + Math.floor(sessionHrs) + "Hrs " + Math.floor(sessionMin) + "Min " + sessionSec.toFixed() + "Sec";
+            } 
+            else {
+                document.getElementById("Overallstudy").value = "Sorry, your browser does not support web storage...";
+            }
+               
+            previousTime=elapsedTime;
+
+            if (elapsedTime >= 1000*40*60) {
+                animeSesh();
+                Alert("Study over. Time to watch ANIME!!!");
+            }
+
+            if (!timer_is_over) {
+                t = setTimeout(timer, 1000);
+            }
+        }
+
+        function startTimer() {
+            
+            if (!timer_is_over) {
+                if (!timer_is_on) {
+                    if (!timer_is_paused) {
+                        startedAt = Date.now();
+                    }
+                    else {
+                        addedTime = Date.now()-pausedAT;
+                        startedAt = startedAt + addedTime;
+                        document.getElementById("Resume").value = "Start Timer!"
+                    }
+                    timer_is_on = 1;
+                    timer_is_paused = 0;
+                    timer_has_stopped = 0;
+                    timer();
+                }
+            }
+            else {
+                if (!timer_is_on) {
+                    if (!timer_is_paused) {
+                        startedAt = Date.now();
+                    }
+                    else {
+                        addedTime = Date.now()-pausedAT;
+                        startedAt = startedAt + addedTime;
+                        document.getElementById("Resume").value = "Start Timer!"
+                    }
+                    timer_is_on = 1;
+                    timer_is_paused = 0;
+                    timer_has_stopped = 0;
+                    animeTimer();
+                }
+            }
+        }
+
+        function pauseTimer() {
+            if (!timer_has_stopped && !timer_is_paused) {
+                clearTimeout(t);
+                timer_is_on = 0;
+                timer_is_paused = 1;
+                pausedAT = Date.now();
+                document.getElementById("Resume").value = "Resume Timer!"
+            }
+        }
+
+        function stopTimer() {
+            clearTimeout(t);
+            timer_is_on = 0;
+            timer_is_paused = 0;
+            timer_has_stopped = 1;
+            timer_is_over = 0;
+        }
+
+        function animeSesh() {
+            clearTimeout(t);
+            timer_is_on = 0;
+            timer_is_paused = 0;
+            timer_is_over = 1;
+            animeTimer_is_over = 0;
+        }
+
+        function animeTimer() {
+            elapsedTime = Date.now()-startedAt;
+            elapsedSec = elapsedTime/1000;
+            elapsedMin = elapsedSec/60;
+
+            
+            elapsedSec = elapsedSec-Math.floor(elapsedMin)*60;
+
+            document.getElementById("txt").value = Math.floor(elapsedMin) + ":" + elapsedSec.toFixed();
+
+            if (elapsedTime >= 20*60*1000) {
+                cycleComplete();
+                alert("You have completed an Animedoro cycle. I dare you to do another round.");
+            
+            }
+            if (!animeTimer_is_over) {
+                t = setTimeout(animeTimer, 1000);
+            }
+        }
+
+        function cycleComplete() {
+            clearTimeout(t);
+            animeTimer_is_over = 1;
+            timer_is_over = 0;
+            timer_is_on = 0;
+        }
+        </script>
+
+        <!-- Load external JavaScript -->
+        <script src="scripts.js"></script>
+        
+    </body>
+
+</html>
